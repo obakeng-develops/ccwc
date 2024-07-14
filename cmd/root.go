@@ -27,7 +27,8 @@ var rootCmd = &cobra.Command{
     no file is specified) to the standard output.  A line is defined as a string of characters delimited by a ⟨newline⟩
     character.  Characters beyond the final ⟨newline⟩ character will not be included in the line count.`,
 	Run: func(cmd *cobra.Command, args []string) {
-
+		rootCmdOptions.validate()
+		rootCmdOptions.run()
 	},
 }
 
@@ -51,5 +52,9 @@ func (r *rootOptions) validate() error {
 		slog.Error("Please provide a file path")
 	}
 
+	return nil
+}
+
+func (r *rootOptions) run() error {
 	return nil
 }
