@@ -2,21 +2,20 @@ package pkg
 
 import (
 	"bufio"
-	"fmt"
 	"log/slog"
 	"os"
 )
 
-func DetermineNumberOfBytes(filePath string) {
+func DetermineNumberOfBytes(filePath string) int {
 	file, err := os.ReadFile(filePath)
 	if err != nil {
 		slog.Error("Could not read file", "err", err)
 	}
 
-	fmt.Printf("%d %s\n", len(file), filePath)
+	return len(file)
 }
 
-func DetermineNumberOfLines(filePath string) {
+func DetermineNumberOfLines(filePath string) int {
 	file, err := os.Open(filePath)
 	if err != nil {
 		slog.Error("Could not read file", "err", err)
@@ -30,10 +29,10 @@ func DetermineNumberOfLines(filePath string) {
 		count++
 	}
 
-	fmt.Printf("%d %s", count, filePath)
+	return count
 }
 
-func DetermineNumberOfWords(filePath string) {
+func DetermineNumberOfWords(filePath string) int {
 	file, err := os.Open(filePath)
 	if err != nil {
 		slog.Error("Could not read file", "err", err)
@@ -48,10 +47,10 @@ func DetermineNumberOfWords(filePath string) {
 		count++
 	}
 
-	fmt.Printf("%d %s", count, filePath)
+	return count
 }
 
-func DetermineNumberOfCharacters(filePath string) {
+func DetermineNumberOfCharacters(filePath string) int {
 	file, err := os.Open(filePath)
 	if err != nil {
 		slog.Error("Could not read file", "err", err)
@@ -66,5 +65,5 @@ func DetermineNumberOfCharacters(filePath string) {
 		count++
 	}
 
-	fmt.Printf("%d %s", count, filePath)
+	return count
 }
