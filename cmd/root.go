@@ -78,13 +78,24 @@ func (r *rootOptions) run() error {
 	}
 
 	if r.filePathLines != "" {
-		validPath, err := pkg.ValidateFilePath(r.filePathBytes)
+		validPath, err := pkg.ValidateFilePath(r.filePathLines)
 		if err != nil {
 			slog.Error("An error occurred", "err", err)
 		}
 
 		if validPath {
 			pkg.DetermineNumberOfLines(r.filePathLines)
+		}
+	}
+
+	if r.filePathWords != "" {
+		validPath, err := pkg.ValidateFilePath(r.filePathWords)
+		if err != nil {
+			slog.Error("An error occurred", "err", err)
+		}
+
+		if validPath {
+			pkg.DetermineNumberOfWords(r.filePathWords)
 		}
 	}
 
