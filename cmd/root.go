@@ -4,6 +4,7 @@ Copyright © 2024 Obakeng Mosadi mosadiobakeng7@gmail.com
 package cmd
 
 import (
+	"fmt"
 	"log/slog"
 	"os"
 
@@ -79,7 +80,8 @@ func (r *rootOptions) run() error {
 		}
 
 		if validPath {
-			pkg.DetermineNumberOfBytes(r.filePathBytes)
+			numBytes := pkg.DetermineNumberOfBytes(r.filePathBytes)
+			fmt.Printf("%d %s", numBytes, r.filePathBytes)
 		}
 	}
 
@@ -90,7 +92,8 @@ func (r *rootOptions) run() error {
 		}
 
 		if validPath {
-			pkg.DetermineNumberOfLines(r.filePathLines)
+			numLines := pkg.DetermineNumberOfLines(r.filePathLines)
+			fmt.Printf("%d %s", numLines, r.filePathLines)
 		}
 	}
 
@@ -101,7 +104,8 @@ func (r *rootOptions) run() error {
 		}
 
 		if validPath {
-			pkg.DetermineNumberOfWords(r.filePathWords)
+			numWords := pkg.DetermineNumberOfWords(r.filePathWords)
+			fmt.Printf("%d %s", numWords, r.filePathWords)
 		}
 	}
 
@@ -112,7 +116,8 @@ func (r *rootOptions) run() error {
 		}
 
 		if validPath {
-			pkg.DetermineNumberOfCharacters(r.filePathCharacters)
+			numCharacters := pkg.DetermineNumberOfCharacters(r.filePathCharacters)
+			fmt.Printf("%d %s", numCharacters, r.filePathCharacters)
 		}
 	}
 
