@@ -12,9 +12,10 @@ import (
 )
 
 type rootOptions struct {
-	filePathBytes string
-	filePathLines string
-	filePathWords string
+	filePathBytes      string
+	filePathLines      string
+	filePathWords      string
+	filePathCharacters string
 }
 
 var rootCmdOptions = &rootOptions{}
@@ -46,6 +47,7 @@ func init() {
 	rootCmd.Flags().StringVarP(&rootCmdOptions.filePathBytes, "bytes", "c", "", "The number of bytes in each input file is written to the standard output.")
 	rootCmd.Flags().StringVarP(&rootCmdOptions.filePathLines, "lines", "l", "", "The number of lines in each input file is written to the standard output.")
 	rootCmd.Flags().StringVarP(&rootCmdOptions.filePathWords, "words", "w", "", "The number of words in each input file is written to the standard output.")
+	rootCmd.Flags().StringVarP(&rootCmdOptions.filePathCharacters, "characters", "m", "", "The number of characters in each input file is written to the standard output.")
 }
 
 func (r *rootOptions) validate() error {
@@ -58,6 +60,10 @@ func (r *rootOptions) validate() error {
 	}
 
 	if r.filePathWords == "" {
+		slog.Debug("Please provide a file path")
+	}
+
+	if r.filePathCharacters == "" {
 		slog.Debug("Please provide a file path")
 	}
 
@@ -96,6 +102,17 @@ func (r *rootOptions) run() error {
 
 		if validPath {
 			pkg.DetermineNumberOfWords(r.filePathWords)
+		}
+	}
+
+	if r.filePathCharacters != "" {
+		validPath, err := pkg.ValidateFilePath(r.filePathCharacters)
+		if err != nil {
+			slog.Error("An error occurred", "err", err)
+		}
+
+		if validPath {
+			pkg.DetermineNumberOfCharacters(r.filePathCharacters)
 		}
 	}
 
