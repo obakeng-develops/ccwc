@@ -50,3 +50,21 @@ func DetermineNumberOfWords(filePath string) {
 
 	fmt.Printf("%d %s", count, filePath)
 }
+
+func DetermineNumberOfCharacters(filePath string) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		slog.Error("Could not read file", "err", err)
+	}
+
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanRunes)
+
+	count := 0
+
+	for scanner.Scan() {
+		count++
+	}
+
+	fmt.Printf("%d %s", count, filePath)
+}
