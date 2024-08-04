@@ -7,13 +7,14 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/obakeng-develops/ccwc/pkg"
 	"github.com/spf13/cobra"
 )
 
 type rootOptions struct {
-	numBytes string
-	numLines string
-	numWords string
+	filePathBytes string
+	filePathLines string
+	filePathWords string
 }
 
 var rootCmdOptions = &rootOptions{}
@@ -42,19 +43,50 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.Flags().StringVarP(&rootCmdOptions.numBytes, "bytes", "c", "", "The number of bytes in each input file is written to the standard output.")
-	rootCmd.Flags().StringVarP(&rootCmdOptions.numLines, "lines", "l", "", "The number of lines in each input file is written to the standard output.")
-	rootCmd.Flags().StringVarP(&rootCmdOptions.numLines, "words", "w", "", "The number of words in each input file is written to the standard output.")
+	rootCmd.Flags().StringVarP(&rootCmdOptions.filePathBytes, "bytes", "c", "", "The number of bytes in each input file is written to the standard output.")
+	rootCmd.Flags().StringVarP(&rootCmdOptions.filePathLines, "lines", "l", "", "The number of lines in each input file is written to the standard output.")
+	rootCmd.Flags().StringVarP(&rootCmdOptions.filePathWords, "words", "w", "", "The number of words in each input file is written to the standard output.")
 }
 
 func (r *rootOptions) validate() error {
-	if r.numBytes == "" || r.numLines == "" || r.numWords == "" {
-		slog.Error("Please provide a file path")
+	if r.filePathBytes == "" {
+		slog.Debug("Please provide a file path")
+	}
+
+	if r.filePathLines == "" {
+		slog.Debug("Please provide a file path")
+	}
+
+	if r.filePathWords == "" {
+		slog.Debug("Please provide a file path")
 	}
 
 	return nil
 }
 
 func (r *rootOptions) run() error {
+
+	if r.filePathBytes != "" {
+		validPath, err := pkg.ValidateFilePath(r.filePathBytes)
+		if err != nil {
+			slog.Error("An error occurred", "err", err)
+		}
+
+		if validPath {
+			pkg.DetermineNumberOfBytes(r.filePathBytes)
+		}
+	}
+
+	if r.filePathLines != "" {
+		validPath, err := pkg.ValidateFilePath(r.filePathBytes)
+		if err != nil {
+			slog.Error("An error occurred", "err", err)
+		}
+
+		if validPath {
+			pkg.DetermineNumberOfLines(r.filePathLines)
+		}
+	}
+
 	return nil
 }
