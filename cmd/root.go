@@ -30,6 +30,11 @@ var rootCmd = &cobra.Command{
     no file is specified) to the standard output.  A line is defined as a string of characters delimited by a ⟨newline⟩
     character.  Characters beyond the final ⟨newline⟩ character will not be included in the line count.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		if len(args) == 1 {
+			firstArg := args[0]
+			rootCmdOptions.fullOutput(firstArg)
+		}
+
 		rootCmdOptions.validate()
 		rootCmdOptions.run()
 	},
@@ -81,7 +86,7 @@ func (r *rootOptions) run() error {
 
 		if validPath {
 			numBytes := pkg.DetermineNumberOfBytes(r.filePathBytes)
-			fmt.Printf("%d %s", numBytes, r.filePathBytes)
+			fmt.Printf("%d %s\n", numBytes, r.filePathBytes)
 		}
 	}
 
@@ -93,7 +98,7 @@ func (r *rootOptions) run() error {
 
 		if validPath {
 			numLines := pkg.DetermineNumberOfLines(r.filePathLines)
-			fmt.Printf("%d %s", numLines, r.filePathLines)
+			fmt.Printf("%d %s\n", numLines, r.filePathLines)
 		}
 	}
 
@@ -105,7 +110,7 @@ func (r *rootOptions) run() error {
 
 		if validPath {
 			numWords := pkg.DetermineNumberOfWords(r.filePathWords)
-			fmt.Printf("%d %s", numWords, r.filePathWords)
+			fmt.Printf("%d %s\n", numWords, r.filePathWords)
 		}
 	}
 
@@ -117,8 +122,24 @@ func (r *rootOptions) run() error {
 
 		if validPath {
 			numCharacters := pkg.DetermineNumberOfCharacters(r.filePathCharacters)
-			fmt.Printf("%d %s", numCharacters, r.filePathCharacters)
+			fmt.Printf("%d %s\n", numCharacters, r.filePathCharacters)
 		}
+	}
+
+	return nil
+}
+
+func (r *rootOptions) fullOutput(arg string) error {
+	validPath, err := pkg.ValidateFilePath(arg)
+	if err != nil {
+		slog.Error("An error occurred", "err", err)
+	}
+
+	if validPath {
+		numBytes := pkg.DetermineNumberOfBytes(arg)
+		numLines := pkg.DetermineNumberOfLines(arg)
+		numWords := pkg.DetermineNumberOfWords(arg)
+		fmt.Printf("%d %d %d %s\n", numLines, numWords, numBytes, arg)
 	}
 
 	return nil
