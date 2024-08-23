@@ -80,9 +80,7 @@ func (r *rootOptions) run() error {
 
 	if r.filePathBytes != "" {
 		validPath, err := pkg.ValidateFilePath(r.filePathBytes)
-		if err != nil {
-			slog.Error("An error occurred", "err", err)
-		}
+		checkErr(err)
 
 		if validPath {
 			numBytes := pkg.DetermineNumberOfBytes(r.filePathBytes)
@@ -92,9 +90,7 @@ func (r *rootOptions) run() error {
 
 	if r.filePathLines != "" {
 		validPath, err := pkg.ValidateFilePath(r.filePathLines)
-		if err != nil {
-			slog.Error("An error occurred", "err", err)
-		}
+		checkErr(err)
 
 		if validPath {
 			numLines := pkg.DetermineNumberOfLines(r.filePathLines)
@@ -104,9 +100,7 @@ func (r *rootOptions) run() error {
 
 	if r.filePathWords != "" {
 		validPath, err := pkg.ValidateFilePath(r.filePathWords)
-		if err != nil {
-			slog.Error("An error occurred", "err", err)
-		}
+		checkErr(err)
 
 		if validPath {
 			numWords := pkg.DetermineNumberOfWords(r.filePathWords)
@@ -116,9 +110,7 @@ func (r *rootOptions) run() error {
 
 	if r.filePathCharacters != "" {
 		validPath, err := pkg.ValidateFilePath(r.filePathCharacters)
-		if err != nil {
-			slog.Error("An error occurred", "err", err)
-		}
+		checkErr(err)
 
 		if validPath {
 			numCharacters := pkg.DetermineNumberOfCharacters(r.filePathCharacters)
@@ -129,11 +121,15 @@ func (r *rootOptions) run() error {
 	return nil
 }
 
-func (r *rootOptions) fullOutput(arg string) error {
-	validPath, err := pkg.ValidateFilePath(arg)
+func checkErr(err error) {
 	if err != nil {
 		slog.Error("An error occurred", "err", err)
 	}
+}
+
+func (r *rootOptions) fullOutput(arg string) error {
+	validPath, err := pkg.ValidateFilePath(arg)
+	checkErr(err)
 
 	if validPath {
 		numBytes := pkg.DetermineNumberOfBytes(arg)
